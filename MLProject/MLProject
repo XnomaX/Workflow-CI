@@ -1,0 +1,10 @@
+name: mlflow-ci-training
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      data_path: {type: str, default: "namadataset_preprocessing/dataset_preprocessing.zip"}
+    command: >
+      python modelling.py --data_path {data_path}
