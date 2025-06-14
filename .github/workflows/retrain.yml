@@ -1,0 +1,38 @@
+name: Train Model CI
+
+on:
+  workflow_dispatch:           
+  push:
+    paths:
+      - MLProject/**            
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        environment-file: MLProject/conda.yaml
+        activate-environment: mlflow-env
+        auto-activate-base: false
+
+    - name: Install additional pip dependencies
+      run: |
+        conda activate mlflow-env
+        pip install mlflow dagshub
+
+    - name: Run MLflow Project
+      run: |
+        conda activate mlflow-env
+        mlflow run MLProject -P data_path=MLProject/namadataset_preprocessing/dataset.csv
+
+    - name: Upload model artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: trained-model
+        path: mlruns/
