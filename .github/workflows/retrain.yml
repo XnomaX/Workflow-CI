@@ -52,7 +52,7 @@ jobs:
       - name: Compress mlruns
         shell: bash -l {0}
         run: |
-          zip -r trained-model.zip mlruns/
+          zip -r trained-model.zip trained-model/
       
       - name: Commit model zip to repo
         shell: bash -l {0}
