@@ -49,10 +49,9 @@ jobs:
           name: trained-model
           path: trained-model
 
-      - name: Upload mlruns to Google Drive
-        uses: cschleiden/actions-upload-to-google-drive@v1
+      - name: Upload Artifacts TO Google Drive
+        uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.3.1
         with:
-          credentials: ${{ secrets.GDRIVE_CREDENTIALS }}
-          folder: 1LTYoB5FCFyuzxXUJqMNDQO0sXD4lVl8D
-          name: mlruns-${{ github.run_id }} 
-          path: mlruns/
+          target: trained-model
+          credentials: GDRIVE_CREDENTIALS
+          parent_folder_id: GDRIVE_PARENT_ID
