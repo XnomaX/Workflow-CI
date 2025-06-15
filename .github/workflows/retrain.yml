@@ -49,16 +49,10 @@ jobs:
           name: trained-model
           path: trained-model
 
-      - name: Compress mlruns
-        shell: bash -l {0}
-        run: |
-          zip -r trained-model.zip trained-model/
-      
-      - name: Commit model zip to repo
-        shell: bash -l {0}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add trained-model.zip
-          git commit -m "add trained model zip [auto]" || echo "Nothing to commit"
-          git push origin main
+      - name: Upload mlruns to Google Drive
+        uses: cschleiden/actions-upload-to-google-drive@v1
+        with:
+          credentials: ${{ secrets.GDRIVE_CREDENTIALS }}
+          folder: 1LTYoB5FCFyuzxXUJqMNDQO0sXD4lVl8D
+          name: mlruns-${{ github.run_id }} 
+          path: mlruns/
