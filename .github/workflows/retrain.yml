@@ -23,27 +23,17 @@ jobs:
           activate-environment: mlflow-env
           auto-activate-base: false
 
-      - name: Install additional pip dependencies
-        shell: bash -l {0}
-        run: |
-          pip install mlflow dagshub
-
       - name: Run MLflow Project
         shell: bash -l {0}
         run: |
-          mlflow run MLProject -P data_path=dataset_preprocessing.zip
+          mlflow run MLProject -P data_path=dataset_preprocessing.zip \
+            --backend-store-uri file:./mlruns 
 
-      - name: Salin model ke folder repo
+      - name: Commit mlruns to repository
         shell: bash -l {0}
         run: |
-          mkdir -p trained_model
-          cp -r MLProject/mlruns trained_model/
-
-      - name: Commit model ke repo
-        shell: bash -l {0}
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add trained_model/
-          git commit -m "chore: update trained model artifacts"
-          git push
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add mlruns/
+          git commit -m "chore: update trained model [auto]" || echo "No changes to commit"
+          git push origin main
