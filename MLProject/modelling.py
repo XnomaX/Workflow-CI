@@ -15,7 +15,6 @@ args = parser.parse_args()
 
 # Aktifkan tracking
 mlflow.set_experiment("msml-basic")
-mlflow.set_tracking_uri("file:./mlruns")
 mlflow.sklearn.autolog()
 
 # Deteksi apakah input ZIP atau CSV
