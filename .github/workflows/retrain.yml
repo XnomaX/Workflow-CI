@@ -8,7 +8,7 @@ on:
       - '**.csv'
 
 permissions:
-  contents: write  
+  contents: write
 
 jobs:
   train:
