@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-    - '**.zip'
-    - '**.csv'
+      - '**.zip'
+      - '**.csv'
 
 permissions:
   contents: write  
@@ -36,7 +36,7 @@ jobs:
           name: trained-model
           path: mlruns/
 
-  commit-artifact:
+  postprocess:
     needs: train
     runs-on: ubuntu-latest
 
@@ -50,9 +50,18 @@ jobs:
           name: trained-model
           path: trained-model
 
-      - name: Upload Artifacts TO Google Drive
+      - name: Upload Artifacts to Google Drive
         uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.3.1
         with:
           target: trained-model/**
           credentials: ${{ secrets.GDRIVE_CREDENTIALS }}
           parent_folder_id: ${{ secrets.GDRIVE_PARENT_ID }}
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/mlflow-ci:${{ github.run_number }} MLProject/
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/mlflow-ci:${{ github.run_number }}
