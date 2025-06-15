@@ -1,8 +1,5 @@
 name: msml-basic
 
-docker_env:
-  build_context: .
-
 entry_points:
   main:
     parameters:
