@@ -24,11 +24,6 @@ jobs:
           activate-environment: mlflow-env
           auto-activate-base: false
 
-      - name: Install MLflow
-        shell: bash -l {0}
-        run: |
-          pip install mlflow
-
       - name: Run MLflow Project
         shell: bash -l {0}
         run: |
@@ -54,10 +49,16 @@ jobs:
           name: trained-model
           path: trained-model
 
-      - name: Commit artifact to repository
+      - name: Compress mlruns
+        shell: bash -l {0}
+        run: |
+          zip -r trained-model.zip mlruns/
+      
+      - name: Commit model zip to repo
+        shell: bash -l {0}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add trained-model/
-          git commit -m "chore: add trained model artifact [auto]" || echo "Nothing to commit"
+          git add trained-model.zip
+          git commit -m "add trained model zip [auto]" || echo "Nothing to commit"
           git push origin main
