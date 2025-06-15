@@ -26,7 +26,7 @@ jobs:
       - name: Run MLflow Project
         shell: bash -l {0}
         run: |
-          mlflow run MLProject -P data_path=dataset_preprocessing.zip --backend-store-uri file:./mlruns 
+          mlflow run MLProject -P data_path=dataset_preprocessing.zip
 
       - name: Commit mlruns to repository
         shell: bash -l {0}
