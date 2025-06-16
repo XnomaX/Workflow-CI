@@ -1,9 +1,12 @@
-FROM continuumio/miniconda3
+FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY . /app
+# Copy kode dan model
+COPY trained-model/ ./trained-model
 
-RUN conda env create -f conda.yaml
+# Install dependencies
+RUN pip install mlflow scikit-learn pandas
 
-CMD ["conda", "run", "--no-capture-output", "-n", "mlflow-env", "python", "modelling.py", "--data_path", "dataset_preprocessing.zip"]
+# Serve model
+CMD ["mlflow", "models", "serve", "-m", "trained-model/", "-p", "5000", "--no-conda"]
