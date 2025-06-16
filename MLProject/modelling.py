@@ -51,12 +51,9 @@ model = RandomForestClassifier(
     random_state=42
 )
 
-with mlflow.start_run() as run:
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    acc = accuracy_score(y_test, y_pred)
-    mlflow.log_metric("accuracy", acc)
-    # Log model ke MLflow (dan simpan manual juga)
-    mlflow.sklearn.log_model(model, "model", input_example=X_test.iloc[:5])
-
-    print(f"✅ Model disalin ke ./model (siap serving). Akurasi: {acc:.4f}")
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+acc = accuracy_score(y_test, y_pred)
+mlflow.log_metric("accuracy", acc)
+# Log model ke MLflow (dan simpan manual juga)
+mlflow.sklearn.log_model(model, "model", input_example=X_test.iloc[:5])
