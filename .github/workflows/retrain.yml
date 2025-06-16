@@ -53,7 +53,7 @@ jobs:
       - name: Upload Artifacts to Google Drive
         uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.3.1
         with:
-          target: trained-model/**
+          target: MLProject/trained_model/**
           credentials: ${{ secrets.GDRIVE_CREDENTIALS }}
           parent_folder_id: ${{ secrets.GDRIVE_PARENT_ID }}
           replace_mode: delete_first
