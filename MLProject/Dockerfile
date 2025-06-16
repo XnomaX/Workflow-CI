@@ -3,7 +3,7 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Copy kode dan model
-COPY trained-model/ ./trained-model
+COPY trained_model/ ./trained-model
 
 # Install dependencies
 RUN pip install mlflow scikit-learn pandas
